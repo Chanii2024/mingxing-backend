@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/inquiry")
-@CrossOrigin(origins = "http://localhost:5173") // Allow requests from Frontend
+@CrossOrigin(origins = {"https://mingxing-10d5f.web.app", "http://localhost:5173", "http://127.0.0.1:5173"})
 public class InquiryController {
 
     @Autowired
