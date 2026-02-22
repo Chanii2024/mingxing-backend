@@ -1,81 +1,74 @@
 package com.mingxing.backend.service;
 
 import com.mingxing.backend.dto.InquiryRequest;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    @Value("${resend.api.key}")
+    private String resendApiKey;
 
-    @Value("${spring.mail.username}")
-    private String adminEmail;
+    private static final String RESEND_API_URL = "https://api.resend.com/emails";
+    private static final String FROM_EMAIL = "Mingxing <onboarding@resend.dev>";
+    private static final String ADMIN_EMAIL = "chanirub2003@gmail.com";
 
-    // Path to the assets folder, relative to the backend working directory
-    // Backend runs from: c:\Work - Chanii\Projects\Mingxing Cute\backend
-    // Assets are at:     c:\Work - Chanii\Projects\Mingxing Cute\src\assets
-    private static final String ASSETS_PATH = "../src/assets/";
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    public void sendInquiryEmails(InquiryRequest request) throws MessagingException {
+    public void sendInquiryEmails(InquiryRequest request) {
         sendAdminEmail(request);
         sendCustomerEmail(request);
     }
 
-    private void sendAdminEmail(InquiryRequest request) throws MessagingException {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-        helper.setFrom(adminEmail);
-        helper.setTo(adminEmail);
-        helper.setSubject("New Inquiry: " + request.getName());
-
+    private void sendAdminEmail(InquiryRequest request) {
         String content = generateEmailBody(
                 "New Inquiry Received",
                 String.format("<p><strong>From:</strong> %s (%s)</p><p><strong>Message:</strong><br/>%s</p>",
                         request.getName(), request.getEmail(), request.getMessage()),
                 request.getCart()
         );
-
-        helper.setText(content, true);
-        try { attachImages(helper, request.getCart()); } catch (Exception e) {
-            System.err.println("Image attach skipped (admin): " + e.getMessage());
-        }
-        javaMailSender.send(message);
-        System.out.println("Admin email sent to " + adminEmail);
+        sendEmail(ADMIN_EMAIL, "New Inquiry: " + request.getName(), content);
+        System.out.println("Admin email sent to " + ADMIN_EMAIL);
     }
 
-    private void sendCustomerEmail(InquiryRequest request) throws MessagingException {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-        helper.setFrom(adminEmail);
-        helper.setTo(request.getEmail());
-        helper.setSubject("We received your inquiry - Mingxing");
-
+    private void sendCustomerEmail(InquiryRequest request) {
         String content = generateEmailBody(
                 "Thank You",
                 String.format("<p>Dear %s,</p><p>We have received your inquiry. Our bespoke team will review your selection and get back to you shortly.</p>",
                         request.getName()),
                 request.getCart()
         );
-
-        helper.setText(content, true);
-        try { attachImages(helper, request.getCart()); } catch (Exception e) {
-            System.err.println("Image attach skipped (customer): " + e.getMessage());
-        }
-        javaMailSender.send(message);
+        sendEmail(request.getEmail(), "We received your inquiry - Mingxing", content);
         System.out.println("Customer email sent to " + request.getEmail());
+    }
+
+    private void sendEmail(String to, String subject, String htmlContent) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(resendApiKey);
+
+            Map<String, Object> body = new HashMap<>();
+            body.put("from", FROM_EMAIL);
+            body.put("to", List.of(to));
+            body.put("subject", subject);
+            body.put("html", htmlContent);
+
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+            ResponseEntity<String> response = restTemplate.exchange(
+                    RESEND_API_URL, HttpMethod.POST, entity, String.class);
+            System.out.println("Resend response [" + to + "]: " + response.getStatusCode() + " " + response.getBody());
+        } catch (Exception e) {
+            System.err.println("Failed to send email to " + to + ": " + e.getMessage());
+            throw new RuntimeException("Email send failed: " + e.getMessage());
+        }
     }
 
     private String generateEmailBody(String title, String messageHtml, List<InquiryRequest.CartItem> cart) {
@@ -145,96 +138,5 @@ public class EmailService {
                 </body>
                 </html>
                 """, title, messageHtml, cartHtml.toString());
-    }
-
-    private void attachImages(MimeMessageHelper helper, List<InquiryRequest.CartItem> cart) {
-        if (cart == null) return;
-
-        for (InquiryRequest.CartItem item : cart) {
-            if (item.getProductId() == null) continue;
-
-            String contentId = "img-product-" + item.getProductId();
-            String fileName = "T-" + item.getProductId() + ".png";
-
-            // Determine directory based on color if available, default to White or generic
-            String subDir = "";
-            if ("black".equalsIgnoreCase(item.getColor())) {
-                subDir = "T-Shirt-Black/";
-            } else if ("white".equalsIgnoreCase(item.getColor())) {
-                subDir = "T-Shirt-White/";
-            }
-
-            File imageFile = new File(ASSETS_PATH + subDir + fileName);
-
-            // Fallback checks
-            if (!imageFile.exists()) {
-                imageFile = new File(ASSETS_PATH + "T-Shirt-White/" + fileName);
-            }
-            if (!imageFile.exists()) {
-                imageFile = new File(ASSETS_PATH + "T-Shirt-Black/" + fileName);
-            }
-            if (!imageFile.exists()) {
-                imageFile = new File(ASSETS_PATH + "Honoring the Craft/" + fileName);
-            }
-            if (!imageFile.exists()) {
-                imageFile = new File(ASSETS_PATH + fileName);
-            }
-
-            if (imageFile.exists()) {
-                try {
-                    byte[] compressedBytes = compressImage(imageFile, 200, 0.8f);
-                    org.springframework.core.io.ByteArrayResource imageResource =
-                        new org.springframework.core.io.ByteArrayResource(compressedBytes);
-                    helper.addInline(contentId, imageResource, "image/jpeg");
-                    System.out.println("Embedded " + fileName + " (" + (compressedBytes.length / 1024) + "KB compressed)");
-                } catch (Exception e) {
-                    System.err.println("FAILED to embed " + fileName + ": " + e.getMessage());
-                }
-            } else {
-                System.err.println("File NOT FOUND: " + imageFile.getAbsolutePath());
-            }
-        }
-    }
-
-    /**
-     * Resize and compress an image to JPEG.
-     * @param file     The source image file
-     * @param maxWidth Target max width in pixels
-     * @param quality  JPEG quality (0.0 - 1.0)
-     */
-    private byte[] compressImage(File file, int maxWidth, float quality) throws Exception {
-        java.awt.image.BufferedImage original = javax.imageio.ImageIO.read(file);
-
-        // Calculate new dimensions maintaining aspect ratio
-        int origWidth = original.getWidth();
-        int origHeight = original.getHeight();
-        int newWidth = Math.min(origWidth, maxWidth);
-        int newHeight = (int) ((double) origHeight / origWidth * newWidth);
-
-        // Resize
-        java.awt.image.BufferedImage resized = new java.awt.image.BufferedImage(newWidth, newHeight, java.awt.image.BufferedImage.TYPE_INT_RGB);
-        java.awt.Graphics2D g = resized.createGraphics();
-        g.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        g.setRenderingHint(java.awt.RenderingHints.KEY_RENDERING, java.awt.RenderingHints.VALUE_RENDER_QUALITY);
-        g.setColor(java.awt.Color.WHITE); // Fill background for PNG transparency
-        g.fillRect(0, 0, newWidth, newHeight);
-        g.drawImage(original, 0, 0, newWidth, newHeight, null);
-        g.dispose();
-
-        // Compress to JPEG
-        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-        javax.imageio.stream.ImageOutputStream ios = javax.imageio.ImageIO.createImageOutputStream(baos);
-        javax.imageio.ImageWriter writer = javax.imageio.ImageIO.getImageWritersByFormatName("jpeg").next();
-        writer.setOutput(ios);
-
-        javax.imageio.plugins.jpeg.JPEGImageWriteParam params = new javax.imageio.plugins.jpeg.JPEGImageWriteParam(null);
-        params.setCompressionMode(javax.imageio.ImageWriteParam.MODE_EXPLICIT);
-        params.setCompressionQuality(quality);
-
-        writer.write(null, new javax.imageio.IIOImage(resized, null, null), params);
-        writer.dispose();
-        ios.close();
-
-        return baos.toByteArray();
     }
 }
