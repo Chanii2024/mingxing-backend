@@ -48,8 +48,11 @@ public class EmailService {
         );
 
         helper.setText(content, true);
-        attachImages(helper, request.getCart());
+        try { attachImages(helper, request.getCart()); } catch (Exception e) {
+            System.err.println("Image attach skipped (admin): " + e.getMessage());
+        }
         javaMailSender.send(message);
+        System.out.println("Admin email sent to " + adminEmail);
     }
 
     private void sendCustomerEmail(InquiryRequest request) throws MessagingException {
@@ -68,8 +71,11 @@ public class EmailService {
         );
 
         helper.setText(content, true);
-        attachImages(helper, request.getCart());
+        try { attachImages(helper, request.getCart()); } catch (Exception e) {
+            System.err.println("Image attach skipped (customer): " + e.getMessage());
+        }
         javaMailSender.send(message);
+        System.out.println("Customer email sent to " + request.getEmail());
     }
 
     private String generateEmailBody(String title, String messageHtml, List<InquiryRequest.CartItem> cart) {
