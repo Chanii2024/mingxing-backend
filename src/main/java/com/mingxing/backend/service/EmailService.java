@@ -34,7 +34,7 @@ public class EmailService {
                         request.getName(), request.getEmail(), request.getMessage()),
                 request.getCart()
         );
-        sendEmail(ADMIN_EMAIL, "New Inquiry: " + request.getName(), content);
+        sendEmail(ADMIN_EMAIL, "New Inquiry: " + request.getName(), content, request.getEmail());
         System.out.println("Admin email sent to " + ADMIN_EMAIL);
     }
 
@@ -45,11 +45,11 @@ public class EmailService {
                         request.getName()),
                 request.getCart()
         );
-        sendEmail(request.getEmail(), "We received your inquiry - Mingxing", content);
+        sendEmail(request.getEmail(), "We received your inquiry - Mingxing", content, null);
         System.out.println("Customer email sent to " + request.getEmail());
     }
 
-    private void sendEmail(String to, String subject, String htmlContent) {
+    private void sendEmail(String to, String subject, String htmlContent, String replyTo) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -60,6 +60,9 @@ public class EmailService {
             body.put("to", List.of(to));
             body.put("subject", subject);
             body.put("html", htmlContent);
+            if (replyTo != null && !replyTo.isEmpty()) {
+                body.put("reply_to", List.of(replyTo));
+            }
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
             ResponseEntity<String> response = restTemplate.exchange(
