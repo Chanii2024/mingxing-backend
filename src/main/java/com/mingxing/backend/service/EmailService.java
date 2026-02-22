@@ -86,22 +86,25 @@ public class EmailService {
             cartHtml.append("<table width='100%' cellpadding='0' cellspacing='0' style='margin-top: 20px; border-collapse: collapse;'>");
 
             for (InquiryRequest.CartItem item : cart) {
-                String contentId = "img-product-" + item.getProductId();
+                String color = (item.getColor() != null && !item.getColor().isEmpty()) ? item.getColor() : "white";
+                String imageUrl = String.format("https://mingxing-10d5f.web.app/t-shirts/%s/T-%d.png",
+                        color, item.getProductId() != null ? item.getProductId() : 1);
 
                 cartHtml.append("<tr>")
                         .append("<td width='120' style='padding: 15px 0; border-bottom: 1px solid #EAEAEA; vertical-align: top;'>");
 
                 if (item.getProductId() != null) {
                     cartHtml.append(String.format(
-                        "<img src='cid:%s' alt='%s' width='100' style='display: block; border-radius: 4px;' />",
-                        contentId, item.getName()
+                        "<img src='%s' alt='%s' width='100' style='display: block; border-radius: 4px;' />",
+                        imageUrl, item.getName()
                     ));
                 }
 
                 cartHtml.append("</td>")
                         .append("<td style='padding: 15px 0 15px 20px; border-bottom: 1px solid #EAEAEA; vertical-align: top;'>")
                         .append(String.format("<div style='font-family: Georgia, serif; font-size: 16px; font-style: italic; color: #2D2D2D;'>%s</div>", item.getName()))
-                        .append(String.format("<div style='font-family: sans-serif; font-size: 12px; color: #888; margin-top: 5px;'>Price: %s</div>", item.getPrice()))
+                        .append(String.format("<div style='font-family: sans-serif; font-size: 12px; color: #888; margin-top: 5px;'>Color: %s</div>", color))
+                        .append(String.format("<div style='font-family: sans-serif; font-size: 12px; color: #888;'>Price: %s</div>", item.getPrice()))
                         .append(String.format("<div style='font-family: sans-serif; font-size: 12px; color: #888;'>Quantity: %d</div>", item.getQuantity()))
                         .append("</td>")
                         .append("</tr>");
