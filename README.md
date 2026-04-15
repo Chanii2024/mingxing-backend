@@ -1,8 +1,6 @@
 # Mingxing Premium
 
-<p align="center">
-  <img src="src/assets/SocialImage.png" alt="Mingxing Logo" width="200" />
-</p>
+<img src="src/assets/SocialImage.png" alt="Mingxing Logo" width="200" />
 
 <p align="center">
   <strong>A bespoke lifestyle e-commerce experience specializing in premium apparel and curated merchandise.</strong>
