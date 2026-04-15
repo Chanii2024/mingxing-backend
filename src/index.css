@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #FFFFFF;
+  --color-rose: #EBB3B2;
+  --color-charcoal: #2D2D2D;
+
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-cream text-charcoal font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading italic;
+  }
+
+  /* Custom selection color */
+  ::selection {
+    @apply bg-rose/30;
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Universal scrollbar hiding */
+* {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Chrome, Safari and Opera */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+@layer components {
+  .glass-header {
+    @apply fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-cream/70 border-b border-charcoal/5 transition-all duration-300;
+  }
+
+  .nav-link {
+    @apply text-charcoal/70 transition-colors duration-300 hover:text-charcoal font-medium uppercase tracking-widest text-xs;
+  }
+
+  .btn-premium {
+    @apply px-8 py-3 bg-charcoal text-cream font-medium tracking-wider uppercase text-xs transition-all duration-300 hover:bg-charcoal/90 hover:shadow-lg;
+  }
+}
+
+/* GSAP fade-up utility classes */
+.gsap-fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-cream;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-charcoal/20 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-charcoal/40;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: rgba(18, 18, 18, 0.4);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
