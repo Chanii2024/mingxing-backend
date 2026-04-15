@@ -13,10 +13,14 @@
 
 Mingxing is a high-aesthetic digital platform designed for the modern connoisseur. It combines editorial-inspired design with a seamless shopping experience, focusing on visual excellence and technical precision. The platform serves as a showcase for exclusive collections, featuring fluid animations and a minimalist interface that emphasizes the craftsmanship of every product.
 
-<p align="center">
-  <img src="src/assets/T-32.png" alt="Featured T-Shirt Front" width="400" />
-  <img src="src/assets/T-31.png" alt="Featured T-Shirt Variation" width="400" />
-</p>
+<div align="center">
+  <table>
+    <tr>
+      <td><img src="src/assets/T-32.png" width="400" /></td>
+      <td><img src="src/assets/T-31.png" width="400" /></td>
+    </tr>
+  </table>
+</div>
 
 ## The Collection
 
