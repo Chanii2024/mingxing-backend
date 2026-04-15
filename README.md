@@ -1,103 +1,90 @@
-# Mingxing Cute ✨
+# Mingxing Premium
 
-A premium, high-aesthetic e-commerce platform for exclusive lifestyle merchandise, specializing in bespoke mugs and apparel.
+<p align="center">
+  <img src="src/assets/SocialImage.png" alt="Mingxing Logo" width="200" />
+</p>
 
-![Mingxing Banner](https://via.placeholder.com/1200x400/FFFFFF/2D2D2D?text=Mingxing+Cute+Lifestyle)
+<p align="center">
+  <strong>A bespoke lifestyle e-commerce experience specializing in premium apparel and curated merchandise.</strong>
+</p>
 
-## 🌟 Overview
+---
 
-**Mingxing Cute** is a state-of-the-art web application designed to provide a seamless and visually stunning shopping experience. Built with a focus on editorial-style design, fluid animations, and high-performance modern web technologies.
+## Overview
 
-## 🎨 Visual Identity
+Mingxing is a high-aesthetic digital platform designed for the modern connoisseur. It combines editorial-inspired design with a seamless shopping experience, focusing on visual excellence and technical precision. The platform serves as a showcase for exclusive collections, featuring fluid animations and a minimalist interface that emphasizes the craftsmanship of every product.
 
-The platform follows a sophisticated design system:
-- **Primary Palette**: Cream (`#FFFFFF`), Rose (`#EBB3B2`), Charcoal (`#2D2D2D`).
-- **Typography**: 
-  - **Headings**: *Playfair Display* (Serif / Italic) for a premium editorial feel.
-  - **Body**: *Inter* (Sans-serif) for maximum readability.
-- **Aesthetics**: Glassmorphism, smooth GSAP transitions, and a clean minimalist layout.
+<p align="center">
+  <img src="src/assets/T-32.png" alt="Featured T-Shirt" width="500" />
+</p>
 
-## 🚀 Technical Stack
+## The Collection
+
+Discover our signature pieces, where quality meets minimalist design. Each item is crafted to tell a story of simplicity and elegance.
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><img src="src/assets/T-35.png" width="200" /><br />Selection I</td>
+      <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-38.png" width="200" /><br />Selection II</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-41.png" width="200" /><br />Selection III</td>
+      <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-2.png" width="200" /><br />Selection IV</td>
+    </tr>
+  </table>
+</div>
+
+## Technical Foundation
+
+The platform is built on a robust, modern stack designed for high performance and scalability.
 
 ### Frontend
-- **Framework**: [React 19](https://react.dev/)
-- **Build Tool**: [Vite 7](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
-- **Routing**: [React Router 7](https://reactrouter.com/)
-- **Animations**: [GSAP](https://greensock.com/gsap/) & [GSAP React](https://greensock.com/react/)
-- **Communication**: [@emailjs/browser](https://www.emailjs.com/) for concierge services.
+- Framework: React 19
+- Build Tool: Vite 7
+- Styling: Tailwind CSS 4
+- Animations: GSAP with React Integration
+- Navigation: React Router 7
 
 ### Backend
-- **Framework**: [Spring Boot 3.2.1](https://spring.io/projects/spring-boot) (Java 17)
-- **Features**: RESTful APIs, Spring Mail for transactional emails.
-- **Tools**: Lombok for concise code.
+- Framework: Spring Boot 3.2.x (Java 17)
+- Messaging: Spring Mail for automated inquiry handling
+- API Architecture: Full RESTful implementation
 
-## ✨ Key Features
+## Core Features
 
-- **Dynamic Shop Views**: Dedicated interfaces for [Mug Shops](/mugs) and [T-Shirt Shops](/tshirts).
-- **Premium Animations**: Scroll-triggered reveals and fluid transitions powered by GSAP.
-- **Interactive Cart**: Seamless side-drawer shopping experience.
-- **Responsive Design**: Optimized for everything from mobile devices to ultra-wide monitors.
-- **Concierge Service**: Specialized contact system for bespoke orders.
+- Editorial-Style Navigation: A fluid, visually-driven navigation experience.
+- Dynamic Cart System: A lightweight, responsive side-drawer for managing selections.
+- Bespoke Inquiry Service: Integrated contact system for personalized order handling.
+- Aesthetic Visuals: High-resolution product showcase with interactive hover states and scroll-triggered reveals.
+- Fully Responsive: Precision-engineered layouts that adapt seamlessly to all device resolutions.
 
-## 🛠️ Getting Started
+## Development Setup
 
-### Prerequisites
-- Node.js (v18+)
-- Java 17 (for backend)
+### Project Structure
+
+```text
+Mingxing-Premium/
+├── src/                # Frontend application source
+├── backend/            # Spring Boot service layer
+├── public/             # Static public resources
+└── vite.config.js      # Application configuration
+```
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone [repository-url]
-   cd "Mingxing Cute"
-   ```
-
-2. **Frontend Setup**
+1. Frontend Implementation:
    ```bash
    npm install
    npm run dev
    ```
 
-3. **Backend Setup**
-   Use the included Maven wrapper—you do not need Maven installed globally:
-   
-   **For Windows:**
-   ```powershell
+2. Backend Implementation:
+   ```bash
    cd backend
-   .\mvnw.cmd clean install
    .\mvnw.cmd spring-boot:run
    ```
 
-   **For macOS/Linux:**
-   ```bash
-   cd backend
-   ./mvnw clean install
-   ./mvnw spring-boot:run
-   ```
-
-## 📂 Project Structure
-
-```text
-Mingxing Cute/
-├── src/                # Frontend Source
-│   ├── components/     # Reusable UI components
-│   ├── pages/          # Main application views (Landing, Shops)
-│   ├── assets/         # Static assets & images
-│   ├── index.css       # Global styles & design tokens
-│   └── main.jsx        # Entry point
-├── backend/            # Spring Boot Backend
-│   └── src/            # Java controllers & services
-├── public/             # Static public assets
-├── vite.config.js      # Vite configuration
-└── package.json        # Dependencies & scripts
-```
-
-## 📜 License
-
-This project is private and for internal use.
-
 ---
 
-*Made with ❤️ by Chanii*
+*Curated by Mingxing Collection*
