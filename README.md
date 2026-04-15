@@ -25,11 +25,11 @@ Discover our signature pieces, where quality meets minimalist design. Each item 
 <div align="center">
   <table>
     <tr>
-      <td align="center"><img src="src/assets/T-35.png" width="200" /><br />Selection I</td>
-      <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-39.png" width="200" /><br />Selection II</td>
+      <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-39.png" width="200" /><br />Selection I</td>
+      <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-41.png" width="200" /><br />Selection II</td>
     </tr>
     <tr>
-      <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-41.png" width="200" /><br />Selection III</td>
+      <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-8.png" width="200" /><br />Selection III</td>
       <td align="center"><img src="src/assets/Honoring%20the%20Craft/T-2.png" width="200" /><br />Selection IV</td>
     </tr>
   </table>
