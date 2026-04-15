@@ -2,8 +2,8 @@
 
 <table>
   <tr>
-    <td width="200"><img src="src/assets/SocialImage.png" alt="Mingxing Logo" width="200" /></td>
-    <td style="vertical-align: middle;"><strong>A bespoke lifestyle e-commerce experience specializing in premium apparel and curated merchandise.</strong></td>
+    <td width="200" style="vertical-align: top;"><img src="src/assets/SocialImage.png" alt="Mingxing Logo" width="200" /></td>
+    <td style="vertical-align: top;"><strong>A bespoke lifestyle e-commerce experience specializing in premium apparel and curated merchandise.</strong></td>
   </tr>
 </table>
 
